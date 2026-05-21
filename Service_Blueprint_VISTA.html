@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Blueprint — V.I.S.T.A.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════════════════ */
+:root {
+  --black:   #090909;
+  /* Cream palette for VP + Actors sections */
+  --cream:   #F5F0E8;
+  --cream2:  #EDE8DF;
+  --cream3:  #E2DDD4;
+  --cream-bd:#C8C2B8;
+  --cream-ink:#2A2520;
+  --cream-mid:#6B6560;
+  --cream-dim:#9A948E;
+  --s0:      #0F0F11;
+  --s1:      #141418;
+  --s2:      #1C1C22;
+  --s3:      #252530;
+  --bd:      #2A2A35;
+  --bd2:     #3A3A48;
+
+  --white:   #F0EEE9;
+  --mid:     #9A98A8;
+  --dim:     #5C5A6A;
+
+  --p1:#4DAAFF; --p1b:#0C1F35; --p1d:#162E4A;
+  --p2:#5DD67A; --p2b:#0B1E10; --p2d:#163022;
+  --p3:#A78BFA; --p3b:#17103A; --p3d:#261B50;
+  --p4:#F5C842; --p4b:#1E1600; --p4d:#302400;
+  --p5:#2FD4A0; --p5b:#081A12; --p5d:#102A1E;
+  --p6:#F47E8C; --p6b:#200810; --p6d:#35101C;
+
+  --lev:#111115; --levb:#2A9D8F;
+  --lus:#0E1320; --lusb:#4DAAFF;
+  --lpc:#12101E; --lpcb:#A78BFA;
+  --lfs:#0C1610; --lfsb:#5DD67A;
+  --lbs:#181200; --lbsb:#F5C842;
+  --lsp:#110E1C; --lspb:#C084FC;
+  --lpb:#180808; --lpbb:#F47E8C;
+  --lop:#091509; --lopb:#2FD4A0;
+  --lcrit:#1A1500; --lcritb:#F5C842;
+
+  --font:'Outfit',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --r:8px; --r2:12px; --r3:18px;
+}
+
+/* ══════════════════════════════════════════════════════
+   BASE
+══════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px}
+body{
+  font-family:var(--font);
+  background:var(--black);
+  color:var(--white);
+  line-height:1.5;
+  padding:36px 28px 72px;
+  min-width:1360px;
+}
+
+/* ══════════════════════════════════════════════════════
+   SVG ICON HELPER
+══════════════════════════════════════════════════════ */
+.ico{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.ico svg{display:block}
+
+/* ══════════════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════════════ */
+.hero{
+  text-align:center;
+  padding:52px 32px 44px;
+  margin-bottom:28px;
+  position:relative;
+  border-radius:var(--r3);
+  background:var(--s1);
+  border:1px solid var(--bd);
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 55% 45% at 15% 50%,rgba(77,170,255,.09) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 55% at 85% 50%,rgba(47,212,160,.08) 0%,transparent 70%),
+    radial-gradient(ellipse 35% 35% at 50% 0%,rgba(167,139,250,.06) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(77,170,255,.1);
+  border:1px solid rgba(77,170,255,.25);
+  color:var(--p1);
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:5px 16px;border-radius:100px;margin-bottom:20px;
+}
+.hero h1{
+  font-size:62px;font-weight:900;letter-spacing:-2.5px;line-height:1;
+  margin-bottom:14px;
+  background:linear-gradient(150deg,#F0EEE9 20%,#7A7890 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero h1 .accent{
+  background:linear-gradient(90deg,var(--p1),var(--p5));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero .sub{
+  font-size:20px;font-weight:400;color:var(--mid);margin-bottom:10px;
+}
+.hero .credits{
+  font-size:16px;font-style:italic;color:var(--dim);
+}
+.hero-line{
+  width:64px;height:2px;
+  background:linear-gradient(90deg,var(--p1),var(--p5));
+  border-radius:2px;margin:20px auto 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   SECTION LABEL
+══════════════════════════════════════════════════════ */
+.sec-label{
+  display:flex;align-items:center;gap:10px;
+  font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mid);margin-bottom:14px;
+}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--bd);}
+.cream .sec-label{color:var(--cream-mid);}
+.cream .sec-label::after{background:var(--cream-bd);}
+.cream .sec-label svg{stroke:var(--cream-dim);}
+
+/* ══════════════════════════════════════════════════════
+   VALUE PROPOSITION
+══════════════════════════════════════════════════════ */
+.vp-section{margin-bottom:28px;background:var(--cream);border:1px solid var(--cream-bd);border-radius:var(--r3);padding:24px 24px 20px;}
+.vp-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;}
+
+.vp-main{
+  background:var(--cream2);border:1px solid var(--cream-bd);border-radius:var(--r2);
+  padding:22px 24px;border-left:3px solid var(--p1);position:relative;overflow:hidden;
+}
+.vp-main::after{
+  content:'';position:absolute;top:0;right:0;width:140px;height:140px;
+  background:radial-gradient(circle at top right,rgba(77,170,255,.07),transparent 70%);
+}
+.vp-main .vp-tag{
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:#1A5FA0;margin-bottom:10px;display:flex;align-items:center;gap:6px;
+}
+.vp-main h3{font-size:20px;font-weight:800;color:var(--cream-ink);margin-bottom:10px;letter-spacing:-.3px;}
+.vp-main p{font-size:13.5px;color:var(--cream-mid);line-height:1.65;}
+.vp-main p strong{color:var(--cream-ink);font-weight:600;}
+
+.vp-stat{
+  background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);
+  padding:20px 18px;display:flex;flex-direction:column;justify-content:space-between;
+}
+.vp-stat .s-icon{
+  width:32px;height:32px;border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;margin-bottom:10px;
+}
+.vp-stat .s-num{
+  font-size:42px;font-weight:900;letter-spacing:-1.5px;line-height:1;
+}
+.vp-stat .s-lbl{font-size:13.5px;color:var(--mid);margin-top:6px;line-height:1.45;}
+
+.modules-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px;}
+.mod-card{
+  background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);
+  padding:16px 14px;position:relative;overflow:hidden;
+  transition:border-color .2s,transform .2s;
+}
+.mod-card:hover{transform:translateY(-2px);}
+.mod-icon{
+  width:36px;height:36px;border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;margin-bottom:10px;
+}
+.mod-num{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;color:var(--mid);}
+.mod-name{font-size:15px;font-weight:700;color:var(--white);margin-bottom:5px;}
+.mod-desc{font-size:13px;color:var(--mid);line-height:1.5;}
+.mod-badge{
+  display:inline-block;margin-top:8px;padding:2px 8px;border-radius:100px;
+  font-size:9.5px;font-weight:700;font-family:var(--mono);
+}
+
+/* ══════════════════════════════════════════════════════
+   ACTORS
+══════════════════════════════════════════════════════ */
+.actors-section{margin-bottom:28px;background:var(--cream);border:1px solid var(--cream-bd);border-radius:var(--r3);padding:24px 24px 20px;}
+.actors-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}
+.actor-card{
+  background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);
+  padding:16px 12px;text-align:center;transition:border-color .2s,transform .15s;
+}
+.actor-card:hover{border-color:var(--bd2);transform:translateY(-2px);}
+.actor-ico{
+  width:40px;height:40px;border-radius:var(--r);margin:0 auto 10px;
+  display:flex;align-items:center;justify-content:center;
+}
+.actor-name{font-size:12.5px;font-weight:700;color:var(--white);margin-bottom:4px;line-height:1.3;}
+.actor-role{font-size:11px;color:var(--mid);line-height:1.4;}
+.actor-badge{
+  display:inline-block;margin-top:8px;padding:2px 8px;border-radius:100px;
+  font-size:9.5px;font-weight:700;font-family:var(--mono);
+}
+
+/* ══════════════════════════════════════════════════════
+   LEGEND
+══════════════════════════════════════════════════════ */
+.legend{
+  display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;
+  padding:11px 20px;background:var(--s1);border:1px solid var(--bd);
+  border-radius:var(--r2);margin-bottom:16px;
+}
+.leg-item{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--mid);}
+.leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+
+/* ══════════════════════════════════════════════════════
+   BLUEPRINT
+══════════════════════════════════════════════════════ */
+.bp-wrap{border-radius:var(--r2);overflow:hidden;border:1px solid var(--bd);}
+.bp{display:grid;grid-template-columns:120px repeat(6,1fr);background:var(--s0);}
+
+/* Phase header */
+.ph-corner{
+  background:var(--s2);border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:center;padding:14px 6px;
+}
+.ph-corner span{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);text-align:center;line-height:1.4;}
+
+.ph{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:16px 8px;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);
+}
+.ph:last-child{border-right:none;}
+.ph-num{font-size:30px;font-weight:900;line-height:1;}
+.ph-name{font-size:11.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-top:4px;text-align:center;}
+.ph-sub{font-size:10px;margin-top:2px;text-align:center;opacity:.65;font-style:italic;}
+
+/* Layer label */
+.ll{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:14px 6px;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);text-align:center;
+}
+.ll-ico{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;}
+.ll-name{font-size:11.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;line-height:1.3;}
+.ll-sub{font-size:11px;color:var(--mid);margin-top:4px;line-height:1.35;}
+.ll-badge{margin-top:5px;padding:2px 7px;border-radius:100px;font-size:9px;font-weight:700;font-family:var(--mono);}
+
+/* Content cell */
+.cc{
+  padding:12px 13px;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);
+  font-size:12.5px;line-height:1.6;
+}
+.cc:last-child{border-right:none;}
+.cc ul{list-style:none;}
+.cc ul li{
+  padding:2.5px 0 2.5px 13px;position:relative;
+  color:rgba(240,238,233,.80);
+}
+.cc ul li::before{content:'–';position:absolute;left:0;color:var(--dim);font-size:11px;top:4px;}
+.cc ul li em{font-style:italic;color:var(--mid);}
+.cc ul li.warn{color:var(--p4);}
+.cc ul li.warn::before{content:'!';font-weight:700;color:var(--p4);}
+.cc ul li.prob{color:#F47E8C;}
+.cc ul li.prob::before{content:'×';color:#F47E8C;font-weight:700;}
+.cc ul li.opp{color:#5DD67A;}
+.cc ul li.opp::before{content:'+';color:#5DD67A;font-weight:700;}
+
+/* Module tags */
+.tag{
+  display:inline-block;padding:1px 7px;border-radius:100px;
+  font-size:9.5px;font-weight:700;font-family:var(--mono);
+  vertical-align:middle;margin:0 2px;letter-spacing:.02em;
+}
+.tm1{background:rgba(77,170,255,.15);color:#7EC5FF;}
+.tm2{background:rgba(93,214,122,.15);color:#82E69A;}
+.tm3{background:rgba(245,200,66,.15);color:#F7D46A;}
+.tm4{background:rgba(167,139,250,.15);color:#C4B5FD;}
+.tm5{background:rgba(47,212,160,.15);color:#5EDBB0;}
+.tf1{background:rgba(77,170,255,.12);color:#5BB8FF;font-size:9px;}
+.tf2{background:rgba(245,200,66,.12);color:#F7D46A;font-size:9px;}
+
+/* Separator */
+.sep-ll{
+  display:flex;align-items:center;justify-content:center;padding:7px 5px;
+  border-right:1px solid;border-bottom:1px solid var(--bd);
+  font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;text-align:center;
+}
+.sep-cc{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:7px 8px;border-right:1px solid;border-bottom:1px solid var(--bd);text-align:center;
+}
+.sep-cc:last-child{border-right:none;}
+.sep-arr{font-size:17px;font-weight:900;line-height:1;}
+.sep-lbl{font-size:9.5px;opacity:.8;margin-top:2px;font-style:italic;}
+
+.s-int .sep-ll,.s-int .sep-cc{
+  background:var(--p1b);color:var(--p1);border-color:var(--p1d);
+  border-top:2px solid var(--p1);border-bottom:2px solid var(--p1);
+}
+.s-vis .sep-ll,.s-vis .sep-cc{
+  background:var(--p2b);color:var(--p2);border-color:var(--p2d);
+  border-top:2px solid var(--p2);border-bottom:2px solid var(--p2);
+}
+.s-inn .sep-ll,.s-inn .sep-cc{
+  background:var(--p3b);color:var(--p3);border-color:var(--p3d);
+  border-top:2px solid var(--p3);border-bottom:2px solid var(--p3);
+}
+
+/* Layer BGs */
+.bg-ev{background:var(--lev);}
+.bg-us{background:var(--lus);}
+.bg-pc{background:var(--lpc);}
+.bg-fs{background:var(--lfs);}
+.bg-bs{background:var(--lbs);}
+.bg-sp{background:var(--lsp);}
+.bg-pb{background:var(--lpb);}
+.bg-op{background:var(--lop);}
+.bg-crit{background:var(--lcrit);}
+
+/* ══════════════════════════════════════════════════════
+   NOTES
+══════════════════════════════════════════════════════ */
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.note{
+  background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);
+  padding:16px 18px;border-left:3px solid;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.note-ico{flex-shrink:0;width:32px;height:32px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.note-body strong{font-size:13px;font-weight:700;display:block;margin-bottom:5px;}
+.note-body p{font-size:12px;color:rgba(240,238,233,.65);line-height:1.6;}
+.nw{border-color:var(--p4);} .nw .note-ico{background:rgba(245,200,66,.12);} .nw strong{color:var(--p4);}
+.nb{border-color:var(--p1);} .nb .note-ico{background:rgba(77,170,255,.12);} .nb strong{color:var(--p1);}
+.ng{border-color:var(--p5);} .ng .note-ico{background:rgba(47,212,160,.12);} .ng strong{color:var(--p5);}
+.np{border-color:var(--p3);} .np .note-ico{background:rgba(167,139,250,.12);} .np strong{color:var(--p3);}
+
+/* ══════════════════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.hero{animation:fadeUp .55s ease both;}
+.vp-section{animation:fadeUp .55s ease .08s both;}
+.actors-section{animation:fadeUp .55s ease .16s both;}
+.bp-wrap{animation:fadeUp .55s ease .24s both;}
+.notes{animation:fadeUp .55s ease .32s both;}
+
+@media print{
+  body{padding:10px;min-width:unset;}
+  *{animation:none!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════ HERO ══════════════════════════ -->
+<div class="hero">
+  <div class="hero-eyebrow">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+    Service Blueprint
+  </div>
+  <h1>SERVICE BLUEPRINT — <span class="accent">V.I.S.T.A.</span></h1>
+  <p class="sub">Visión Inteligente y Síntesis de Texto Aumentada — Asistencia visual por IA</p>
+  <p class="credits">Javier David Alfaro Medina — Especialización en Diseño y Creación con IA — UTADEO — 2026</p>
+  <div class="hero-line"></div>
+</div>
+
+<!-- ══════════════════════════ PROPUESTA DE VALOR ══════════════════════════ -->
+<div class="vp-section cream">
+  <div class="sec-label">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    Propuesta de valor del servicio
+  </div>
+  <div class="vp-grid">
+
+    <div class="vp-main">
+      <div class="vp-tag">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg>
+        ¿Qué es V.I.S.T.A.?
+      </div>
+      <h3>La cámara como sentido</h3>
+      <p>Una <strong>app móvil</strong> que usa inteligencia artificial para ser los ojos de personas con discapacidad visual en Colombia. Convierte lo que la cámara ve — billetes, textos, personas, obstáculos — en <strong>voz clara y natural en español</strong>.</p>
+    </div>
+
+    <div class="vp-stat">
+      <div class="s-icon" style="background:rgba(77,170,255,.1)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--p1)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="s-num" style="color:var(--p1)">780K</div>
+      <div class="s-lbl">personas con discapacidad visual en Colombia sin herramienta digital local</div>
+    </div>
+
+    <div class="vp-stat">
+      <div class="s-icon" style="background:rgba(47,212,160,.1)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--p5)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div class="s-num" style="color:var(--p5)">5</div>
+      <div class="s-lbl">módulos de IA que trabajan juntos para dar autonomía total</div>
+    </div>
+
+    <div class="vp-stat">
+      <div class="s-icon" style="background:rgba(245,200,66,.1)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--p4)" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 19a10.9 10.9 0 0 1-2.56-2.37M10.71 5.05A10 10 0 0 1 22.56 9M1.42 9a9.91 9.91 0 0 1 2.87-2.2M15 9.05a5 5 0 0 1 0 5.9M10.71 5.05A10 10 0 0 1 22.56 9M1.42 9a9.91 9.91 0 0 1 2.87-2.2"/><path d="M12 20h.01"/></svg>
+      </div>
+      <div class="s-num" style="color:var(--p4)">3/5</div>
+      <div class="s-lbl">módulos funcionan sin internet, directamente en el celular</div>
+    </div>
+
+  </div>
+
+  <!-- Módulos -->
+  <div class="modules-grid">
+    <div class="mod-card" style="border-color:var(--p1d)">
+      <div class="mod-icon" style="background:rgba(77,170,255,.12)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--p1)" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+      </div>
+      <div class="mod-num" style="color:var(--p1)">Módulo 01</div>
+      <div class="mod-name">Dinero</div>
+      <div class="mod-desc">Identifica billetes y monedas colombianas. Detecta falsificaciones.</div>
+      <span class="mod-badge" style="background:rgba(77,170,255,.12);color:var(--p1)">F1 · MVP</span>
+    </div>
+    <div class="mod-card" style="border-color:var(--p2d)">
+      <div class="mod-icon" style="background:rgba(93,214,122,.12)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--p2)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg>
+      </div>
+      <div class="mod-num" style="color:var(--p2)">Módulo 02</div>
+      <div class="mod-name">Entorno</div>
+      <div class="mod-desc">Describe lo que hay alrededor en lenguaje natural.</div>
+      <span class="mod-badge" style="background:rgba(93,214,122,.12);color:var(--p2)">F1 · MVP</span>
+    </div>
+    <div class="mod-card" style="border-color:var(--p4d)">
+      <div class="mod-icon" style="background:rgba(245,200,66,.12)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--p4)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      </div>
+      <div class="mod-num" style="color:var(--p4)">Módulo 03</div>
+      <div class="mod-name">Texto (OCR)</div>
+      <div class="mod-desc">Lee carteles, etiquetas y documentos en voz alta.</div>
+      <span class="mod-badge" style="background:rgba(245,200,66,.12);color:var(--p4)">F1 · MVP</span>
+    </div>
+    <div class="mod-card" style="border-color:var(--p3d)">
+      <div class="mod-icon" style="background:rgba(167,139,250,.12)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--p3)" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="mod-num" style="color:var(--p3)">Módulo 04</div>
+      <div class="mod-name">Personas</div>
+      <div class="mod-desc">Reconoce personas conocidas. 100% privado, funciona sin internet.</div>
+      <span class="mod-badge" style="background:rgba(167,139,250,.12);color:var(--p3)">F2 · Futuro</span>
+    </div>
+    <div class="mod-card" style="border-color:var(--p5d)">
+      <div class="mod-icon" style="background:rgba(47,212,160,.12)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--p5)" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+      </div>
+      <div class="mod-num" style="color:var(--p5)">Módulo 05</div>
+      <div class="mod-name">Navegación</div>
+      <div class="mod-desc">Detecta obstáculos en tiempo real y avisa por voz.</div>
+      <span class="mod-badge" style="background:rgba(47,212,160,.12);color:var(--p5)">F2 · Futuro</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ ACTORES ══════════════════════════ -->
+<div class="actors-section cream">
+  <div class="sec-label">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    Actores involucrados
+  </div>
+  <div class="actors-grid">
+
+    <div class="actor-card">
+      <div class="actor-ico" style="background:rgba(77,170,255,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--p1)" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="actor-name">Usuario principal</div>
+      <div class="actor-role">Persona con discapacidad visual. Interactúa solo por voz y tacto.</div>
+      <span class="actor-badge" style="background:rgba(77,170,255,.12);color:var(--p1)">Actor central</span>
+    </div>
+
+    <div class="actor-card">
+      <div class="actor-ico" style="background:rgba(93,214,122,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--p2)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="actor-name">Cuidador / Acompañante</div>
+      <div class="actor-role">Apoya la configuración inicial y el registro de personas en Módulo 04.</div>
+      <span class="actor-badge" style="background:rgba(93,214,122,.12);color:var(--p2)">Solo onboarding</span>
+    </div>
+
+    <div class="actor-card">
+      <div class="actor-ico" style="background:rgba(167,139,250,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--p3)" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+      </div>
+      <div class="actor-name">App V.I.S.T.A.</div>
+      <div class="actor-role">Interfaz accesible PWA. Gestiona cámara, voz y vibración.</div>
+      <span class="actor-badge" style="background:rgba(167,139,250,.12);color:var(--p3)">Frontstage</span>
+    </div>
+
+    <div class="actor-card">
+      <div class="actor-ico" style="background:rgba(245,200,66,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--p4)" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div class="actor-name">Claude API</div>
+      <div class="actor-role">Transforma descripciones brutas en español colombiano natural.</div>
+      <span class="actor-badge" style="background:rgba(245,200,66,.12);color:var(--p4)">M02 + M03</span>
+    </div>
+
+    <div class="actor-card">
+      <div class="actor-ico" style="background:rgba(47,212,160,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--p5)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg>
+      </div>
+      <div class="actor-name">HuggingFace</div>
+      <div class="actor-role">Modelos BLIP/LLaVA para entorno y TrOCR para lectura de texto.</div>
+      <span class="actor-badge" style="background:rgba(47,212,160,.12);color:var(--p5)">M02 + M03</span>
+    </div>
+
+    <div class="actor-card">
+      <div class="actor-ico" style="background:rgba(77,170,255,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--p1)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <div class="actor-name">Teachable Machine</div>
+      <div class="actor-role">Clasifica billetes y reconoce personas. Corre directamente en el celular.</div>
+      <span class="actor-badge" style="background:rgba(77,170,255,.12);color:var(--p1)">M01 + M04</span>
+    </div>
+
+    <div class="actor-card">
+      <div class="actor-ico" style="background:rgba(93,214,122,.12)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--p2)" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+      </div>
+      <div class="actor-name">MediaPipe</div>
+      <div class="actor-role">Detecta obstáculos en tiempo real directamente en el celular.</div>
+      <span class="actor-badge" style="background:rgba(93,214,122,.12);color:var(--p2)">M05</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════ LEGEND ══════════════════════════ -->
+<div class="legend">
+  <div class="leg-item"><div class="leg-dot" style="background:var(--lev);border:1px solid var(--levb)"></div>Evidencia física</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--lus);border:1px solid var(--lusb)"></div>Recorrido usuario</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--lpc);border:1px solid var(--lpcb)"></div>Puntos de contacto</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--lfs);border:1px solid var(--lfsb)"></div>Frontstage</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--lbs);border:1px solid var(--lbsb)"></div>Backstage IA</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--lsp);border:1px solid var(--lspb)"></div>Soporte</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--lpb);border:1px solid var(--lpbb)"></div>Problemas</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--lop);border:1px solid var(--lopb)"></div>Oportunidades</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--lcrit);border:1px solid var(--p4)"></div>! Punto crítico</div>
+  <div class="leg-item"><span class="tag tf1">F1</span> MVP actual</div>
+  <div class="leg-item"><span class="tag tf2">F2</span> Fase futura</div>
+</div>
+
+<!-- ══════════════════════════ BLUEPRINT ══════════════════════════ -->
+<div class="bp-wrap">
+<div class="bp">
+
+<!-- Phase headers -->
+<div class="ph-corner"><span>FASES DEL<br>SERVICIO</span></div>
+<div class="ph" style="background:var(--p1b)"><span class="ph-num" style="color:var(--p1)">①</span><span class="ph-name" style="color:var(--p1)">Acceso</span><span class="ph-sub" style="color:var(--p1)">Apertura</span></div>
+<div class="ph" style="background:var(--p2b)"><span class="ph-num" style="color:var(--p2)">②</span><span class="ph-name" style="color:var(--p2)">Orientación</span><span class="ph-sub" style="color:var(--p2)">Explorar</span></div>
+<div class="ph" style="background:var(--p3b)"><span class="ph-num" style="color:var(--p3)">③</span><span class="ph-name" style="color:var(--p3)">Selección</span><span class="ph-sub" style="color:var(--p3)">Elegir módulo</span></div>
+<div class="ph" style="background:var(--p4b)"><span class="ph-num" style="color:var(--p4)">④</span><span class="ph-name" style="color:var(--p4)">Captura</span><span class="ph-sub" style="color:var(--p4)">Imagen / video</span></div>
+<div class="ph" style="background:var(--p5b)"><span class="ph-num" style="color:var(--p5)">⑤</span><span class="ph-name" style="color:var(--p5)">Procesamiento</span><span class="ph-sub" style="color:var(--p5)">IA en acción</span></div>
+<div class="ph" style="background:var(--p6b);border-right:none"><span class="ph-num" style="color:var(--p6)">⑥</span><span class="ph-name" style="color:var(--p6)">Respuesta</span><span class="ph-sub" style="color:var(--p6)">Resultado</span></div>
+
+<!-- EVIDENCIA FÍSICA -->
+<div class="ll bg-ev">
+  <div class="ll-ico" style="background:rgba(42,157,143,.12)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--levb)" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+  <div class="ll-name" style="color:var(--levb)">Evidencia<br>Física</div>
+  <div class="ll-sub">Lo que el usuario percibe</div>
+</div>
+<div class="cc bg-ev"><ul><li>Ícono de la app en la pantalla</li><li>Sonido de inicio del celular</li><li>Calor del dispositivo</li></ul></div>
+<div class="cc bg-ev"><ul><li>Voz con las opciones del menú</li><li>Sonidos del entorno</li></ul></div>
+<div class="cc bg-ev"><ul><li>Voz confirmando el módulo activo</li><li>Vibración de bienvenida</li></ul></div>
+<div class="cc bg-crit"><ul><li>Clic sonoro al tomar la foto</li><li>Doble vibración de confirmación</li><li class="warn">Silencio = confusión total</li></ul></div>
+<div class="cc bg-crit"><ul><li>Tono suave de espera</li><li>Vibración larga si algo falla</li><li class="warn">Sin silencio nunca</li></ul></div>
+<div class="cc bg-ev"><ul><li>Voz con el resultado final</li><li>Vibración corta de éxito</li><li>Opciones en audio</li></ul></div>
+
+<!-- RECORRIDO DEL USUARIO -->
+<div class="ll bg-us">
+  <div class="ll-ico" style="background:rgba(77,170,255,.12)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--lusb)" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+  <div class="ll-name" style="color:var(--lusb)">Recorrido<br>Usuario</div>
+  <div class="ll-sub">Acciones + emoción</div>
+</div>
+<div class="cc bg-us"><ul><li>Necesita ayuda → busca la app</li><li>Toca el ícono para abrirla</li><li>Incertidumbre → alivio al oír bienvenida</li></ul></div>
+<div class="cc bg-us"><ul><li>Escucha las opciones disponibles</li><li>Navega deslizando o hablando</li><li>Se orienta y elige</li></ul></div>
+<div class="cc bg-us"><ul><li>Elige qué quiere hacer</li><li>Toca dos veces o dice el nombre</li><li>Confianza — listo para actuar</li></ul></div>
+<div class="cc bg-us"><ul><li>Apunta la cámara sin poder ver</li><li>Toca para fotografiar (M05: camina)</li><li>Ansiedad → alivio al oír "analizando"</li></ul></div>
+<div class="cc bg-crit"><ul><li>Escucha que el sistema trabaja</li><li>Reacciona si recibe aviso de error</li><li class="warn">Tensión máxima si hay silencio</li></ul></div>
+<div class="cc bg-us"><ul><li>Escucha el resultado con claridad</li><li>Actúa de forma autónoma</li><li>Satisfacción — independencia lograda</li></ul></div>
+
+<!-- PUNTOS DE CONTACTO -->
+<div class="ll bg-pc">
+  <div class="ll-ico" style="background:rgba(167,139,250,.12)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--lpcb)" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+  <div class="ll-name" style="color:var(--lpcb)">Puntos de<br>Contacto</div>
+  <div class="ll-sub">16 PC — ! = crítico</div>
+</div>
+<div class="cc bg-crit"><ul><li>Toque del ícono de la app</li><li class="warn">PC-1.2 Mensaje de bienvenida por voz</li><li>Solicitud de permisos (cámara, micrófono)</li></ul></div>
+<div class="cc bg-pc"><ul><li>Lista de módulos leída en voz</li><li>Deslizar o hablar para navegar</li></ul></div>
+<div class="cc bg-pc"><ul><li>Doble toque o comando de voz</li><li>Instrucción de uso + vibración de inicio</li></ul></div>
+<div class="cc bg-crit"><ul><li>Toque para tomar la foto</li><li class="warn">PC-4.2 Confirmación sonora + vibración doble</li><li>Video continuo activo (Módulo 05)</li></ul></div>
+<div class="cc bg-crit"><ul><li class="warn">PC-5.1 Sonido de espera (máx. 5 seg)</li><li class="warn">PC-5.2 Aviso de error con causa y solución</li></ul></div>
+<div class="cc bg-pc"><ul><li>Resultado leído en voz</li><li>Opción de repetir el resultado</li><li>Menú para continuar o salir</li></ul></div>
+
+<!-- SEP INTERACCIÓN -->
+<div class="sep-ll s-int">↕ LÍNEA DE INTERACCIÓN — Usuario ↔ Sistema</div>
+<div class="sep-cc s-int"><div class="sep-arr">↕</div><div class="sep-lbl">Toque → saludo</div></div>
+<div class="sep-cc s-int"><div class="sep-arr">↕</div><div class="sep-lbl">Gesto/voz → anuncia</div></div>
+<div class="sep-cc s-int"><div class="sep-arr">↕</div><div class="sep-lbl">Selección → confirma</div></div>
+<div class="sep-cc s-int"><div class="sep-arr">↕</div><div class="sep-lbl">Foto → feedback</div></div>
+<div class="sep-cc s-int"><div class="sep-arr">↕</div><div class="sep-lbl">Espera ← respuesta IA</div></div>
+<div class="sep-cc s-int" style="border-right:none"><div class="sep-arr">↕</div><div class="sep-lbl">Resultado → decisión</div></div>
+
+<!-- FRONTSTAGE -->
+<div class="ll bg-fs">
+  <div class="ll-ico" style="background:rgba(93,214,122,.12)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--lfsb)" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+  <div class="ll-name" style="color:var(--lfsb)">Front&shy;stage</div>
+  <div class="ll-sub">Interfaz visible del sistema</div>
+</div>
+<div class="cc bg-fs"><ul><li><em>"V.I.S.T.A. lista. ¿Qué deseas hacer?"</em></li><li>Vibración corta de confirmación</li><li>Primera vez: tutorial de bienvenida por voz</li></ul></div>
+<div class="cc bg-fs"><ul><li>Lee módulos disponibles según conexión</li><li>Sin internet: avisa qué no está activo</li><li>Resalta módulo seleccionado</li></ul></div>
+<div class="cc bg-fs"><ul><li><em>"Módulo de dinero activo."</em></li><li><em>"Apunta la cámara y toca."</em></li><li>Vibración de inicio del módulo</li></ul></div>
+<div class="cc bg-fs"><ul><li>Enciende cámara — captura al toque</li><li>Clic + dos vibraciones → <em>"analizando..."</em></li><li>Avisa si no hay conexión (M02/M03)</li></ul></div>
+<div class="cc bg-crit"><ul><li>Tono suave si tarda más de 2 segundos</li><li class="warn">Informa la causa si algo falla</li><li>Ofrece intentarlo de nuevo</li></ul></div>
+<div class="cc bg-fs"><ul><li>Lee el resultado en español natural</li><li>Vibración corta de éxito</li><li><em>"Repetir, volver al menú o cerrar."</em></li></ul></div>
+
+<!-- SEP VISIBILIDAD -->
+<div class="sep-ll s-vis">👁 LÍNEA DE VISIBILIDAD — Frontstage / Backstage</div>
+<div class="sep-cc s-vis"><div class="sep-arr">↓</div><div class="sep-lbl">Interfaz activa IA</div></div>
+<div class="sep-cc s-vis"><div class="sep-arr">↓</div><div class="sep-lbl">Red → configura UI</div></div>
+<div class="sep-cc s-vis"><div class="sep-arr">↓</div><div class="sep-lbl">Elección → activa proceso</div></div>
+<div class="sep-cc s-vis"><div class="sep-arr">↓</div><div class="sep-lbl">Foto → enviada a IA</div></div>
+<div class="sep-cc s-vis"><div class="sep-arr">↕</div><div class="sep-lbl">IA procesa ← API responde</div></div>
+<div class="sep-cc s-vis" style="border-right:none"><div class="sep-arr">↑</div><div class="sep-lbl">Resultado → voz</div></div>
+
+<!-- BACKSTAGE IA -->
+<div class="ll bg-bs">
+  <div class="ll-ico" style="background:rgba(245,200,66,.12)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--lbsb)" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><circle cx="12" cy="10" r="3"/></svg></div>
+  <div class="ll-name" style="color:var(--lbsb)">Backstage<br>IA</div>
+  <div class="ll-sub">Procesos invisibles · 5 modelos</div>
+</div>
+<div class="cc bg-bs"><ul>
+  <li><span class="tag tm1">M01</span> Carga modelo de billetes (TF.js) <span class="tag tf1">F1</span></li>
+  <li><span class="tag tm4">M04</span> Carga modelo de caras on-device <span class="tag tf2">F2</span></li>
+  <li><span class="tag tm5">M05</span> Inicializa detección de obstáculos <span class="tag tf2">F2</span></li>
+  <li><span class="tag tm2">M02</span><span class="tag tm3">M03</span> Verifican conexión</li>
+</ul></div>
+<div class="cc bg-bs"><ul>
+  <li>Detecta internet → bifurca el servicio</li>
+  <li>Sin conexión: desactiva M02 y M03</li>
+  <li>Actualiza menú con módulos disponibles</li>
+</ul></div>
+<div class="cc bg-bs"><ul>
+  <li><span class="tag tm1">M01</span> Clasificador visual TM <span class="tag tf1">F1</span></li>
+  <li><span class="tag tm2">M02</span> BLIP/LLaVA + Claude API <span class="tag tf1">F1</span></li>
+  <li><span class="tag tm3">M03</span> TrOCR + Claude API <span class="tag tf1">F1</span></li>
+  <li><span class="tag tm4">M04</span> Modelo local on-device <span class="tag tf2">F2</span></li>
+  <li><span class="tag tm5">M05</span> MediaPipe en tiempo real <span class="tag tf2">F2</span></li>
+</ul></div>
+<div class="cc bg-bs"><ul>
+  <li><span class="tag tm1">M01</span> Frame → redimensiona 224×224</li>
+  <li><span class="tag tm2">M02</span> Imagen → base64 → BLIP</li>
+  <li><span class="tag tm3">M03</span> Imagen → base64 → TrOCR</li>
+  <li><span class="tag tm5">M05</span> Video → frames continuos</li>
+</ul></div>
+<div class="cc bg-bs"><ul>
+  <li><span class="tag tm1">M01</span> Clasifica billete (umbral &gt;80%)</li>
+  <li><span class="tag tm2">M02</span> BLIP describe → Claude API refina</li>
+  <li><span class="tag tm3">M03</span> TrOCR extrae → Claude API redacta</li>
+  <li><span class="tag tm4">M04</span> Compara cara local · sin enviar datos</li>
+  <li><span class="tag tm5">M05</span> Distancia → alerta si &lt;1 m</li>
+</ul></div>
+<div class="cc bg-bs"><ul>
+  <li><span class="tag tm1">M01</span> <em>"$20.000. Parece auténtico."</em></li>
+  <li><span class="tag tm2">M02</span> Descripción natural del entorno</li>
+  <li><span class="tag tm3">M03</span> <em>"Letrero: Salida de emergencia."</em></li>
+  <li><span class="tag tm4">M04</span> <em>"[Nombre] reconocido."</em> <span class="tag tf2">F2</span></li>
+  <li><span class="tag tm5">M05</span> <em>"Obstáculo a 80 cm."</em> <span class="tag tf2">F2</span></li>
+</ul></div>
+
+<!-- SEP INTERNA -->
+<div class="sep-ll s-inn">⚙ LÍNEA INTERNA — IA ↔ Infraestructura</div>
+<div class="sep-cc s-inn"><div class="sep-arr">→</div><div class="sep-lbl">IA usa TF.js</div></div>
+<div class="sep-cc s-inn"><div class="sep-arr">→</div><div class="sep-lbl">App verifica red</div></div>
+<div class="sep-cc s-inn"><div class="sep-arr">→</div><div class="sep-lbl">Router activa cámara</div></div>
+<div class="sep-cc s-inn"><div class="sep-arr">→</div><div class="sep-lbl">Pipeline procesa imagen</div></div>
+<div class="sep-cc s-inn"><div class="sep-arr">→</div><div class="sep-lbl">IA consume APIs externas</div></div>
+<div class="sep-cc s-inn" style="border-right:none"><div class="sep-arr">→</div><div class="sep-lbl">Resultado activa voz</div></div>
+
+<!-- SOPORTE -->
+<div class="ll bg-sp">
+  <div class="ll-ico" style="background:rgba(192,132,252,.12)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--lspb)" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>
+  <div class="ll-name" style="color:var(--lspb)">Soporte</div>
+  <div class="ll-sub">Tecnología e infraestructura</div>
+</div>
+<div class="cc bg-sp"><ul><li>TensorFlow.js · PWA Service Worker</li><li>Web Speech API</li><li>OS Permissions API · Android/iOS</li></ul></div>
+<div class="cc bg-sp"><ul><li>Navigator.onLine API</li><li>App State Manager</li><li>ARIA Live Regions · WCAG 2.1</li></ul></div>
+<div class="cc bg-sp"><ul><li>Module Router (JS)</li><li>Vibration API · Web Audio API</li><li>WCAG 2.1 — gestión de foco</li></ul></div>
+<div class="cc bg-sp"><ul><li>Camera API (MediaDevices)</li><li>Canvas API — captura de frames</li><li>Image Preprocessing · Base64</li></ul></div>
+<div class="cc bg-sp"><ul><li>Claude API — Anthropic</li><li>HuggingFace: BLIP/LLaVA + TrOCR</li><li>MediaPipe on-device · Error Handler</li></ul></div>
+<div class="cc bg-sp"><ul><li>Web Speech API TTS</li><li>Session State Manager</li><li>Local Storage (solo M04)</li><li>Ley 1581/2012 · WCAG 2.1</li></ul></div>
+
+<!-- PROBLEMAS -->
+<div class="ll bg-pb">
+  <div class="ll-ico" style="background:rgba(244,126,140,.12)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--lpbb)" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+  <div class="ll-name" style="color:var(--lpbb)">Problemas<br>Detectados</div>
+  <div class="ll-sub">Riesgos por fase</div>
+</div>
+<div class="cc bg-pb"><ul><li class="prob">La app carga y no dice nada</li><li class="prob">Usuario no sabe si falló o carga</li><li class="prob">Sin alternativa si rechaza permisos</li></ul></div>
+<div class="cc bg-pb"><ul><li class="prob">No explica por qué faltan módulos sin red</li><li class="prob">Menú largo difícil de seguir de oído</li></ul></div>
+<div class="cc bg-pb"><ul><li class="prob">El módulo puede fallar sin avisar</li><li class="prob">Instrucción de uso demasiado larga</li></ul></div>
+<div class="cc bg-pb"><ul><li class="prob">Poca luz → foto inútil sin saberlo</li><li class="prob">Sin guía para apuntar sin ver</li><li class="prob">M05 lento en celulares básicos</li></ul></div>
+<div class="cc bg-pb"><ul><li class="prob">Espera larga → pierde el contexto</li><li class="prob">La IA duda pero no lo comunica</li><li class="prob">Silencio ante error = colapso percibido</li></ul></div>
+<div class="cc bg-pb"><ul><li class="prob">Resultado con términos difíciles</li><li class="prob">Voz sin velocidad ajustable</li><li class="prob">Olvida las opciones del menú final</li></ul></div>
+
+<!-- OPORTUNIDADES -->
+<div class="ll bg-op">
+  <div class="ll-ico" style="background:rgba(47,212,160,.12)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--lopb)" stroke-width="2.5"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg></div>
+  <div class="ll-name" style="color:var(--lopb)">Oportunidades</div>
+  <div class="ll-sub">Soluciones estratégicas</div>
+</div>
+<div class="cc bg-op"><ul><li class="opp">Vibración progresiva durante la carga</li><li class="opp">Sonido de arranque como identidad sonora</li><li class="opp">Modo offline activado automáticamente</li></ul></div>
+<div class="cc bg-op"><ul><li class="opp">Offline = capacidad, no error</li><li class="opp">Menú ordenado por frecuencia de uso</li></ul></div>
+<div class="cc bg-op"><ul><li class="opp">Instrucciones de máximo 8 palabras</li><li class="opp">Verificar cámara/mic antes de abrir módulo</li></ul></div>
+<div class="cc bg-op"><ul><li class="opp">Avisar si hay poca luz antes de capturar</li><li class="opp">Vibración que guía la distancia al objeto</li><li class="opp">Sonido que indica si está bien enfocado</li></ul></div>
+<div class="cc bg-op"><ul><li class="opp">Cache para resultados frecuentes en M01</li><li class="opp">Reintento automático elegante si falla</li><li class="opp">"Creo que es..." cuando la IA duda</li></ul></div>
+<div class="cc bg-op"><ul><li class="opp">Velocidad de voz ajustable</li><li class="opp">Historial de últimos resultados repetible</li><li class="opp">Modo principiante y modo experto</li></ul></div>
+
+</div><!-- /.bp -->
+</div><!-- /.bp-wrap -->
+
+<!-- ══════════════════════════ NOTES ══════════════════════════ -->
+<div style="display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);margin:28px 0 14px;background:var(--cream);border:1px solid var(--cream-bd);border-radius:var(--r3);padding:18px 24px;">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--cream-dim)" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+  <span style="color:var(--cream-ink)">NOTAS DEL BLUEPRINT</span>
+  <span style="flex:1;height:1px;background:var(--cream-bd);display:block;margin-left:4px;"></span>
+</div>
+<div class="notes">
+  <div class="note nw">
+    <div class="note-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--p4)" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+    <div class="note-body"><strong>4 momentos críticos del servicio</strong><p>PC-1.2, PC-4.2, PC-5.1 y PC-5.2: si el sistema guarda silencio en cualquiera de ellos, el usuario pierde la orientación completamente. Siempre debe haber sonido o vibración en menos de 2 segundos.</p></div>
+  </div>
+  <div class="note nb">
+    <div class="note-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--p1)" stroke-width="2.5"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 19a10.9 10.9 0 0 1-2.56-2.37M10.71 5.05A10 10 0 0 1 22.56 9M1.42 9a9.91 9.91 0 0 1 2.87-2.2M15 9.05a5 5 0 0 1 0 5.9"/></svg></div>
+    <div class="note-body"><strong>Servicio con y sin internet</strong><p>M01, M04 y M05 funcionan directamente en el celular. M02 y M03 requieren conexión. Cuando no hay red, la app comunica claramente el estado y ofrece las opciones disponibles — nunca falla en silencio.</p></div>
+  </div>
+  <div class="note ng">
+    <div class="note-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--p5)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+    <div class="note-body"><strong>Privacidad por diseño — Módulo 04</strong><p>El módulo de personas procesa todo directamente en el celular, sin enviar datos al exterior. Cumple con la Ley 1581/2012 de protección de datos personales en Colombia y el principio privacy-by-design.</p></div>
+  </div>
+  <div class="note np">
+    <div class="note-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--p3)" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><circle cx="12" cy="10" r="2"/></svg></div>
+    <div class="note-body"><strong>5 modelos de IA orquestados</strong><p>Módulo 01, 04 y 05 corren en el celular (baja latencia). Módulo 02 y 03 usan la nube (Claude API + HuggingFace). El usuario siempre escucha una sola voz fluida y natural en español colombiano.</p></div>
+  </div>
+</div>
+
+</body>
+</html>
