@@ -10,4 +10,4 @@ Especialización en Diseño y Creación con IA · UTADEO · 2026
 
 ---
 
-Visualizar en línea: [javialfaro11.github.io/vista-service-blueprint](https://javialfaro11.github.io/vista-service-blueprint)
+Visualizar en línea: [javialfaro11.github.io/vista-service-blueprint](https://javialfaro11.github.io/Service-Blueprint-V.I.S.T.A/)
